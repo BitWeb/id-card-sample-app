@@ -1,0 +1,83 @@
+<?php
+use BitWeb\IdCard\Authentication\IdCardAuthentication;
+?>
+
+<?php if ($this->error !== null):?>
+    <div class="alert alert-danger">
+        <?php echo $this->error?>
+    </div>
+<?php endif; ?>
+<div class="jumbotron">
+    <h1><?php echo sprintf($this->translate('Id card %stest%s'), '<span class="zf-green">', '</span>') ?></h1>
+    <p><a class="btn btn-success btn-lg" href="https://github.com/bitweb/id-card" target="_blank">Fork bitweb/id-card on GitHub &raquo;</a></p>
+</div>
+
+<div class="row"
+
+     <div id="pluginLocation"></div>
+
+    <div class="col-md-4">
+        <div class="panel <?php if (IdCardAuthentication::isUserLoggedIn()): ?>panel-success<?php else: ?>panel-default<?php endif; ?>">
+            <div class="panel-heading">
+                <h3 class="panel-title">1. Log in</h3>
+            </div>
+            <div class="panel-body">
+                <?php if (!IdCardAuthentication::isUserLoggedIn()): ?>
+                    <p>Log in using the button in header or use the button below.</p>
+                    <p><a class="btn btn-success pull-right" href="/id-card/index.php?redirectUrl=<?php echo $this->url('home')?>">Or click here</a></p>
+                <?php else: ?>
+                    <p>All done!</p>
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-<?php if ($this->file !== null): ?>success<?php else: ?>default<?php endif; ?>">
+            <div class="panel-heading">
+                <h3 class="panel-title">2. Select file and sign</h3>
+            </div>
+            <div class="panel-body">
+                <?php if (IdCardAuthentication::isUserLoggedIn()): ?>
+                    <?php if ($this->file === null):?>
+                        <p>Select the file you would like to sign from your computer and click sign.</p>
+                        <form method="post" id="FileUploader" enctype="multipart/form-data">
+                            <p><input name="file" type="file" id="upload-file"></p>
+                        </form>
+                        <p><button class="btn btn-success pull-right" id="upload">Upload</button></p>
+                    <?php else: ?>
+                        <?php if ($this->ddocFile === null):?>
+                            <p>File "<?php echo $this->file?>" uploaded.</p>
+                            <p><button class="btn btn-warning pull-left">Cancel</button></p>
+                            <p><button id="sign" class="btn btn-success pull-right">Sign</button></p>
+                        <?php else: ?>
+                            <p>All done here too! Keep up the good work!</p>
+                        <?php endif; ?>
+                    <?php endif;?>
+                <?php else: ?>
+                    <p>Please log in first!</p>
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">3. Download signed file.</h3>
+            </div>
+            <div class="panel-body">
+                <?php if (IdCardAuthentication::isUserLoggedIn()): ?>
+                    <?php if ($this->file === null): ?>
+                        <p>Select the file to be signed.</p>
+                    <?php else: ?>
+                        <p>Click to download the signed file. Currently only DDOC files are supported.</p>
+                        <p><button class="btn btn-success pull-right">Download</button></p>
+                    <?php endif;?>
+                <?php else: ?>
+                    <p>Please log in first!</p>
+                <?php endif;?>
+            </div>
+        </div>
+    </div>
+</div>

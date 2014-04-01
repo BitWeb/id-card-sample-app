@@ -1,0 +1,16 @@
+{
+    "name": "bitweb/id-card-sample-app",
+    "description": "BitWeb sample app for Estonian ID-Card authentication and signing.",
+    "license": "proprietary",
+    "homepage": "http://bitweb.ee/",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.3.*",
+        "bitweb/id-card": "dev-signing"
+    },
+    "autoload": {
+        "psr-0": {
+            "": ["src/"]
+        }
+    }
+}
