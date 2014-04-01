@@ -12,8 +12,23 @@ $(document).ready(function () {
     });
 
     $('#sign').click(function() {
-        loadSigningPlugin('et');
-        var handler = digidocPluginHandler('et');
-        handler.getCertificate();
+        try {
+            loadSigningPlugin('et');
+            var cert = new IdCardPluginHandler('et').getCertificate();
+        } catch (e) {
+            // TODO diplay errors to user
+            console.log(e);
+        }
+
+        $.post(Config.prepareUrl, {
+            certHex: cert.cert,
+            certId: cert.id
+        }, function (data) {
+            console.log(data);
+        })
     })
 });
+
+var Config = {
+    prepareUrl: ""
+};

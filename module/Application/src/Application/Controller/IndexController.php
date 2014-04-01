@@ -3,7 +3,7 @@
 namespace Application\Controller;
 
 use BitWeb\IdCard\Authentication\IdCardAuthentication;
-use BitWeb\IdCard\Signing\ConfirmationInfo;
+use BitWeb\IdCard\Signing\SignatureService;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
@@ -23,15 +23,6 @@ class IndexController extends AbstractActionController
             $error = 'Don\'t hack. Log in first!';
         }
 
-        try {
-            $fileContainer = new Container('file');
-            if (isset($fileContainer->systemName) && $fileContainer->systemName !== null) {
-                $realName = $fileContainer->realName;
-            }
-        } catch (\Exception $e) {
-            (new Container('file'))->getManager()->getStorage()->clear();
-        }
-
         if ($this->getRequest()->isPost() && $error === null && $realName === null) {
             $uploadedFile = $this->getRequest()->getFiles('file');
             if ($uploadedFile['error'] === 0) {
@@ -42,11 +33,6 @@ class IndexController extends AbstractActionController
                 $realName = $uploadedFile['name'];
                 $file = time() . basename($realName);
                 copy($uploadedFile['tmp_name'], $this->fileStoragePath . DIRECTORY_SEPARATOR . $file);
-
-                // save file data to session
-                $fileContainer = new Container('file');
-                $fileContainer->systemName = $file;
-                $fileContainer->realName = $realName;
             } else {
                 $error = 'No file chosen!';
             }
@@ -54,10 +40,39 @@ class IndexController extends AbstractActionController
 
         $view = new ViewModel();
         $view->error = $error;
-        $view->file = $realName;
+        $view->file = $file;
+        $view->realName = $realName;
         $view->ddocFile = $ddocFile;
 
         return $view;
+    }
+
+    public function prepareAction()
+    {
+        if ($this->getRequest()->isPost()) {
+            /**
+             * @var $certHex string
+             * @var $certId string
+             * @var $file string
+             */
+            $certHex = $this->params('certHex');
+            $certId = $this->params('certId');
+            $file = $this->params('file');
+            if ($certHex !== null && $certId !== null && $file !== null) {
+                $signatureService = new SignatureService();
+                $signatureService->setWsdl();
+                $signatureService->initSoap();
+
+                $sessionId = $signatureService->startSession($this->fileStoragePath . DIRECTORY_SEPARATOR . $file);
+
+                $signatureService->prepareSignature($sessionId, $certId, $certHex);
+
+                $signingSession = new Container('signingSession');
+                $signingSession->sessionId = $sessionId;
+            }
+        }
+
+        return $this->response;
     }
 
     public function finalizeAction()

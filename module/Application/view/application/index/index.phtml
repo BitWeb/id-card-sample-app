@@ -12,8 +12,10 @@ use BitWeb\IdCard\Authentication\IdCardAuthentication;
     <p><a class="btn btn-success btn-lg" href="https://github.com/bitweb/id-card" target="_blank">Fork bitweb/id-card on GitHub &raquo;</a></p>
 </div>
 
-<div class="row"
+<input type="hidden" name="file" value="<?php echo $this->file?>">
+<input type="hidden" name="realName" value="<?php echo $this->realName?>">
 
+<div class="row">
      <div id="pluginLocation"></div>
 
     <div class="col-md-4">
@@ -47,7 +49,7 @@ use BitWeb\IdCard\Authentication\IdCardAuthentication;
                         <p><button class="btn btn-success pull-right" id="upload">Upload</button></p>
                     <?php else: ?>
                         <?php if ($this->ddocFile === null):?>
-                            <p>File "<?php echo $this->file?>" uploaded.</p>
+                            <p>File "<?php echo $this->realName?>" uploaded.</p>
                             <p><button class="btn btn-warning pull-left">Cancel</button></p>
                             <p><button id="sign" class="btn btn-success pull-right">Sign</button></p>
                         <?php else: ?>
@@ -81,3 +83,6 @@ use BitWeb\IdCard\Authentication\IdCardAuthentication;
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    Config.prepareUrl = "<?php echo $this->url('application', ['controller' => 'index', 'action' => 'prepare']) ?>";
+</script>
