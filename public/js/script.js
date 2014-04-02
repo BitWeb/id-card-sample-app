@@ -15,20 +15,73 @@ $(document).ready(function () {
         try {
             loadSigningPlugin('et');
             var cert = new IdCardPluginHandler('et').getCertificate();
-        } catch (e) {
-            // TODO diplay errors to user
-            console.log(e);
-        }
 
-        $.post(Config.prepareUrl, {
-            certHex: cert.cert,
-            certId: cert.id
-        }, function (data) {
-            console.log(data);
+            $.post(Config.prepareUrl, {
+                file: $('#fileInput').val(),
+                certHex: cert.cert,
+                certId: cert.id
+            }, function (data) {
+                if (data.success) {
+                    try {
+                        var signature = new IdCardPluginHandler('et').sign(cert.id, data.hash);
+
+                        $.post(Config.finalizeUrl, {
+                            signature: signature,
+                            sessionId: data.sessionId,
+                            signatureId: data.signatureId
+                        }, function (data) {
+                            if (data.success) {
+                                Config.sessionId = data.sessionId;
+
+                                $('#signPanelBody').html('<p>Well done! Now go and download you\'re file!</p>');
+                            } else {
+                                Error.show(data.error);
+                            }
+                        });
+                    } catch (e) {
+                        Error.show(e.message);
+                    }
+                } else {
+                    Error.show(data.error);
+                }
+            });
+        } catch (e) {
+            Error.show(e.message)
+        }
+    });
+
+    $('#download').click(function () {
+        $.post(Config.downloadUrl, {
+            sessionId: Config.sessionId,
+            file: $('#fileInput').val(),
+            fileRealName: $('#fileRealName').val()
+        }, function (data, textStatus, jqXHR) {
+            console.log(jqXHR);
         })
-    })
+    });
 });
 
 var Config = {
-    prepareUrl: ""
+    prepareUrl: "",
+    finalizeUrl: "",
+    downloadUrl: "",
+    sessionId: ""
+};
+
+var Error = {
+    show: function (message) {
+        if (message === '') {
+            return;
+        }
+        var container = $('#error');
+        container.html("");
+        container.html(message);
+        container.removeClass('hidden');
+
+        setTimeout(function () {
+            container.slideUp(750, function () {
+                container.addClass('hidden');
+            });
+        }, 5000);
+    }
 };

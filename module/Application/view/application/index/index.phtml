@@ -2,18 +2,24 @@
 use BitWeb\IdCard\Authentication\IdCardAuthentication;
 ?>
 
-<?php if ($this->error !== null):?>
-    <div class="alert alert-danger">
-        <?php echo $this->error?>
-    </div>
-<?php endif; ?>
-<div class="jumbotron">
-    <h1><?php echo sprintf($this->translate('Id card %stest%s'), '<span class="zf-green">', '</span>') ?></h1>
-    <p><a class="btn btn-success btn-lg" href="https://github.com/bitweb/id-card" target="_blank">Fork bitweb/id-card on GitHub &raquo;</a></p>
+
+<div id="error" class="alert alert-danger<?php if ($this->error === null):?> hidden<?php endif; ?>">
+    <?php echo $this->error === null ? '' : $this->error?>
 </div>
 
-<input type="hidden" name="file" value="<?php echo $this->file?>">
-<input type="hidden" name="realName" value="<?php echo $this->realName?>">
+<div class="jumbotron">
+    <h1><?php echo sprintf($this->translate('Id card %stest%s'), '<span class="zf-green">', '</span>') ?></h1>
+    <div class="pull-left">
+        <a class="btn btn-success btn-lg" href="https://github.com/bitweb/id-card" target="_blank">Fork bitweb/id-card on GitHub &raquo;</a>
+    </div>
+    <div class="pull-right">
+        <a class="btn btn-success btn-lg" href="https://github.com/bitweb/id-card-sample-app" target="_blank">Fork bitweb/id-card-sample-app on GitHub &raquo;</a>
+    </div>
+    <p>&nbsp;</p>
+</div>
+
+<input type="hidden" name="file" id="fileInput" value="<?php echo $this->file?>">
+<input type="hidden" name="realName" id="fileRealName" value="<?php echo $this->realName?>">
 
 <div class="row">
      <div id="pluginLocation"></div>
@@ -39,7 +45,7 @@ use BitWeb\IdCard\Authentication\IdCardAuthentication;
             <div class="panel-heading">
                 <h3 class="panel-title">2. Select file and sign</h3>
             </div>
-            <div class="panel-body">
+            <div id="signPanelBody" class="panel-body">
                 <?php if (IdCardAuthentication::isUserLoggedIn()): ?>
                     <?php if ($this->file === null):?>
                         <p>Select the file you would like to sign from your computer and click sign.</p>
@@ -74,7 +80,7 @@ use BitWeb\IdCard\Authentication\IdCardAuthentication;
                         <p>Select the file to be signed.</p>
                     <?php else: ?>
                         <p>Click to download the signed file. Currently only DDOC files are supported.</p>
-                        <p><button class="btn btn-success pull-right">Download</button></p>
+                        <p><button id="download" class="btn btn-success pull-right">Download</button></p>
                     <?php endif;?>
                 <?php else: ?>
                     <p>Please log in first!</p>
@@ -84,5 +90,7 @@ use BitWeb\IdCard\Authentication\IdCardAuthentication;
     </div>
 </div>
 <script type="text/javascript">
-    Config.prepareUrl = "<?php echo $this->url('application', ['controller' => 'index', 'action' => 'prepare']) ?>";
+    Config.prepareUrl = "<?php echo $this->url('application/default', ['controller' => 'index', 'action' => 'prepare']) ?>";
+    Config.finalizeUrl = "<?php echo $this->url('application/default', ['controller' => 'index', 'action' => 'finalize']) ?>";
+    Config.downloadUrl = "<?php echo $this->url('application/default', ['controller' => 'index', 'action' => 'download']) ?>";
 </script>
