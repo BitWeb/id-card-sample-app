@@ -63,15 +63,16 @@ class IndexController extends AbstractActionController
             $certHex = $this->params()->fromPost('certHex');
             $certId = $this->params()->fromPost('certId');
             $file = $this->params()->fromPost('file');
+            $fileRealName = $this->params()->fromPost('fileRealName');
 
             if ($certHex !== null && $certId !== null) {
-                if ($file !== null && file_exists($this->fileStoragePath . DIRECTORY_SEPARATOR . $file)) {
+                if ($file !== null && file_exists($this->fileStoragePath . DIRECTORY_SEPARATOR . $file) && $fileRealName !== null) {
                     try {
                         $signatureService = new SignatureService();
                         $signatureService->setWsdl();
                         $signatureService->initSoap();
 
-                        $sessionId = $signatureService->startSession($this->fileStoragePath . DIRECTORY_SEPARATOR . $file);
+                        $sessionId = $signatureService->startSession($this->fileStoragePath . DIRECTORY_SEPARATOR . $file, $fileRealName);
                         $hash = $signatureService->prepareSignature($sessionId, $certId, $certHex);
                     } catch (IdCardException $e) {
                         $error = $e->getMessage();
@@ -132,30 +133,33 @@ class IndexController extends AbstractActionController
     {
         $error = null;
 
-        if ($this->getRequest()->isPost()) {
-            $sessionId = $this->params()->fromPost('sessionId');
-            $file = $this->params()->fromPost('file');
-            $fileRealName = $this->params()->fromPost('fileRealName');
+        if ($this->getRequest()->isGet()) {
+            $sessionId = $this->params()->fromQuery('sessionId');
+            $file = $this->params()->fromQuery('file');
+            $fileRealName = $this->params()->fromQuery('fileRealName');
             if ($sessionId !== null && $fileRealName !== null) {
-                if ($file !== null && file_exists($this->fileStoragePath . DIRECTORY_SEPARATOR . $file)) {
+                $fileLocation = $this->fileStoragePath . DIRECTORY_SEPARATOR . $file;
+                if ($file !== null && file_exists($fileLocation)) {
                     try {
                         $signatureService = $this->initSignatureService();
 
-                        $contents = $signatureService->getSignedDoc($sessionId);
-                        $ddocFileName = $this->fileStoragePath . DIRECTORY_SEPARATOR . time() . '-signed.ddoc';
+                        $contents = $signatureService->getSignedDoc($sessionId, $fileLocation);
+                        $ddocFileName = $this->fileStoragePath . DIRECTORY_SEPARATOR . $fileRealName . '.ddoc';
 
                         file_put_contents($ddocFileName, $contents);
 
                         header('Content-Description: File Transfer');
-                        header('Content-Type: application/xml; charset=utf-8');
+                        header('Content-Type: application/ddoc');
                         header('Content-Disposition: attachment; filename=' . basename($ddocFileName));
-                        header('Expires: 0');
                         header('Content-Transfer-Encoding: binary');
+                        header('Expires: 0');
                         header('Cache-Control: must-revalidate');
                         header('Pragma: public');
-                        header('Content-Length: ' . strlen($contents));
+                        header('Content-Length: ' . filesize($ddocFileName));
 
                         readfile($ddocFileName);
+
+                        return $this->response;
                     } catch (IdCardException $e) {
                         $error = $e->getMessage();
                     }
@@ -166,13 +170,17 @@ class IndexController extends AbstractActionController
                 $error = 'Invalid session ID';
             }
         } else {
-            $error = 'Only POST requests allowed!';
+            $error = 'Only GET requests allowed!';
         }
 
-        return new JsonModel([
-            'success' => false,
-            'error' => $error
-        ]);
+        if ($error !== null) {
+            return new JsonModel([
+                'success' => false,
+                'error' => $error
+            ]);
+        }
+
+        return $this->getResponse();
     }
 
     public function logoutAction()

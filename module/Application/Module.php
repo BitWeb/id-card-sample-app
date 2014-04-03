@@ -16,9 +16,19 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager        = $e->getApplication()->getEventManager();
+        $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+
+        $this->bootstrapSession($e);
+    }
+
+    public function bootstrapSession(MvcEvent $e)
+    {
+        $locator = $e->getApplication()->getServiceManager();
+        /* @var $sessionManager \Zend\Session\SessionManager */
+        $sessionManager = $locator->get('Zend\Session\SessionManager');
+        $sessionManager->start(true);
     }
 
     public function getConfig()

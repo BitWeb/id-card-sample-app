@@ -17,6 +17,7 @@ $(document).ready(function () {
             var cert = new IdCardPluginHandler('et').getCertificate();
 
             $.post(Config.prepareUrl, {
+                fileRealName: $('#fileRealName').val(),
                 file: $('#fileInput').val(),
                 certHex: cert.cert,
                 certId: cert.id
@@ -34,11 +35,14 @@ $(document).ready(function () {
                                 Config.sessionId = data.sessionId;
 
                                 $('#signPanelBody').html('<p>Well done! Now go and download you\'re file!</p>');
+                                $('#downloadDiv').removeClass('hidden');
+                                $('#signDiv').addClass('hidden');
                             } else {
                                 Error.show(data.error);
                             }
                         });
                     } catch (e) {
+                        console.log(e);
                         Error.show(e.message);
                     }
                 } else {
@@ -46,18 +50,24 @@ $(document).ready(function () {
                 }
             });
         } catch (e) {
+            console.log(e);
             Error.show(e.message)
         }
     });
 
     $('#download').click(function () {
-        $.post(Config.downloadUrl, {
-            sessionId: Config.sessionId,
-            file: $('#fileInput').val(),
-            fileRealName: $('#fileRealName').val()
-        }, function (data, textStatus, jqXHR) {
-            console.log(jqXHR);
-        })
+        window.location.href = Config.downloadUrl
+            + '?sessionId=' + Config.sessionId
+            + '&file=' + $('#fileInput').val()
+            + '&fileRealName=' + $('#fileRealName').val();
+
+//        $.post(Config.downloadUrl, {
+//            sessionId: Config.sessionId,
+//            file: $('#fileInput').val(),
+//            fileRealName: $('#fileRealName').val()
+//        }, function (data, textStatus, jqXHR) {
+//            console.log(jqXHR);
+//        })
     });
 });
 

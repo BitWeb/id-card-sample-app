@@ -6,7 +6,8 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.3.*",
-        "bitweb/id-card": "dev-signing"
+        "bitweb/id-card": "dev-signing",
+        "bitweb/error-reporting": "dev-master"
     },
     "autoload": {
         "psr-0": {

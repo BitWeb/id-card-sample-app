@@ -75,16 +75,21 @@ use BitWeb\IdCard\Authentication\IdCardAuthentication;
                 <h3 class="panel-title">3. Download signed file.</h3>
             </div>
             <div class="panel-body">
-                <?php if (IdCardAuthentication::isUserLoggedIn()): ?>
-                    <?php if ($this->file === null): ?>
-                        <p>Select the file to be signed.</p>
+                <div id="signDiv">
+                    <?php if (IdCardAuthentication::isUserLoggedIn()): ?>
+                        <?php if ($this->file === null): ?>
+                            <p>Select the file to be signed.</p>
+                        <?php else: ?>
+                            <p>Please sign the document.</p>
+                        <?php endif;?>
                     <?php else: ?>
-                        <p>Click to download the signed file. Currently only DDOC files are supported.</p>
-                        <p><button id="download" class="btn btn-success pull-right">Download</button></p>
+                        <p>Please log in first!</p>
                     <?php endif;?>
-                <?php else: ?>
-                    <p>Please log in first!</p>
-                <?php endif;?>
+                </div>
+                <div id="downloadDiv" class="hidden">
+                    <p>Click to download the signed file. Currently only DDOC files are supported.</p>
+                    <p><button id="download" class="btn btn-success pull-right">Download</button></p>
+                </div>
             </div>
         </div>
     </div>

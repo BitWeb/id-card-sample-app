@@ -3,20 +3,64 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c9ddeccae57fec9a62dc17548ad6013f",
+    "hash": "581d40d10848bc44460c955f4cbd3615",
     "packages": [
+        {
+            "name": "bitweb/error-reporting",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BitWeb/error-reporting.git",
+                "reference": "0eebfe9037e65145dc3c509ad8e8a47aa4d8c50d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BitWeb/error-reporting/zipball/0eebfe9037e65145dc3c509ad8e8a47aa4d8c50d",
+                "reference": "0eebfe9037e65145dc3c509ad8e8a47aa4d8c50d",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": [
+                        "src/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Priit Rand",
+                    "email": "priit@bitweb.ee"
+                },
+                {
+                    "name": "Erich Jagomägis",
+                    "email": "erich@bitweb.ee"
+                },
+                {
+                    "name": "Rain Ramm",
+                    "email": "rain@bitweb.ee"
+                }
+            ],
+            "description": "BitWeb extension for sending errors to email.",
+            "homepage": "http://bitweb.ee/",
+            "time": "2014-04-03 18:14:31"
+        },
         {
             "name": "bitweb/id-card",
             "version": "dev-signing",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BitWeb/id-card.git",
-                "reference": "2ae694d6e388e2667af72c0b97ce4c98c825aece"
+                "reference": "9704a2269b9c7c9d0f19de64aee28d80cc804662"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BitWeb/id-card/zipball/2ae694d6e388e2667af72c0b97ce4c98c825aece",
-                "reference": "2ae694d6e388e2667af72c0b97ce4c98c825aece",
+                "url": "https://api.github.com/repos/BitWeb/id-card/zipball/9704a2269b9c7c9d0f19de64aee28d80cc804662",
+                "reference": "9704a2269b9c7c9d0f19de64aee28d80cc804662",
                 "shasum": ""
             },
             "require": {
@@ -43,7 +87,44 @@
             ],
             "description": "BitWeb extension for Estonian ID-Card authentication and signing.",
             "homepage": "http://bitweb.ee/",
-            "time": "2014-03-30 13:58:03"
+            "time": "2014-04-03 16:34:47"
+        },
+        {
+            "name": "bitweb/stdlib",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BitWeb/stdlib.git",
+                "reference": "088c3164837117a6042b6e03f37e5faa758bbc29"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BitWeb/stdlib/zipball/088c3164837117a6042b6e03f37e5faa758bbc29",
+                "reference": "088c3164837117a6042b6e03f37e5faa758bbc29",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "": [
+                        "src/",
+                        "test/"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "description": "BitWeb library for standard functions.",
+            "homepage": "http://bitweb.ee/",
+            "time": "2014-03-13 22:42:53"
         },
         {
             "name": "zendframework/zendframework",
@@ -217,7 +298,9 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bitweb/id-card": 20
+        "bitweb/id-card": 20,
+        "bitweb/error-reporting": 20,
+        "bitweb/stdlib": 20
     },
     "platform": {
         "php": ">=5.3.3"
