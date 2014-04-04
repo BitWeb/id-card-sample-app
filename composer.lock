@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "581d40d10848bc44460c955f4cbd3615",
+    "hash": "e59bbc60deff95c6723d9783528ffb66",
     "packages": [
         {
             "name": "bitweb/error-reporting",
@@ -88,43 +88,6 @@
             "description": "BitWeb extension for Estonian ID-Card authentication and signing.",
             "homepage": "http://bitweb.ee/",
             "time": "2014-04-03 16:34:47"
-        },
-        {
-            "name": "bitweb/stdlib",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/BitWeb/stdlib.git",
-                "reference": "088c3164837117a6042b6e03f37e5faa758bbc29"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/BitWeb/stdlib/zipball/088c3164837117a6042b6e03f37e5faa758bbc29",
-                "reference": "088c3164837117a6042b6e03f37e5faa758bbc29",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "": [
-                        "src/",
-                        "test/"
-                    ]
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "proprietary"
-            ],
-            "description": "BitWeb library for standard functions.",
-            "homepage": "http://bitweb.ee/",
-            "time": "2014-03-13 22:42:53"
         },
         {
             "name": "zendframework/zendframework",
@@ -299,8 +262,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "bitweb/id-card": 20,
-        "bitweb/error-reporting": 20,
-        "bitweb/stdlib": 20
+        "bitweb/error-reporting": 20
     },
     "platform": {
         "php": ">=5.3.3"
