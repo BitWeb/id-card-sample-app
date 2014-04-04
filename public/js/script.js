@@ -12,9 +12,11 @@ $(document).ready(function () {
     });
 
     $('#sign').click(function() {
+        $('.loader').addClass('loader-active');
+
         try {
-            loadSigningPlugin('et');
-            var cert = new IdCardPluginHandler('et').getCertificate();
+            loadSigningPlugin('est');
+            var cert = new IdCardPluginHandler('est').getCertificate();
 
             $.post(Config.prepareUrl, {
                 fileRealName: $('#fileRealName').val(),
@@ -37,12 +39,13 @@ $(document).ready(function () {
                                 $('#signPanelBody').html('<p>Well done! Now go and download you\'re file!</p>');
                                 $('#downloadDiv').removeClass('hidden');
                                 $('#signDiv').addClass('hidden');
+
+                                $('.loader').removeClass('loader-active');
                             } else {
                                 Error.show(data.error);
                             }
                         });
                     } catch (e) {
-                        console.log(e);
                         Error.show(e.message);
                     }
                 } else {
@@ -50,8 +53,7 @@ $(document).ready(function () {
                 }
             });
         } catch (e) {
-            console.log(e);
-            Error.show(e.message)
+            Error.show(e.message);
         }
     });
 
@@ -60,14 +62,6 @@ $(document).ready(function () {
             + '?sessionId=' + Config.sessionId
             + '&file=' + $('#fileInput').val()
             + '&fileRealName=' + $('#fileRealName').val();
-
-//        $.post(Config.downloadUrl, {
-//            sessionId: Config.sessionId,
-//            file: $('#fileInput').val(),
-//            fileRealName: $('#fileRealName').val()
-//        }, function (data, textStatus, jqXHR) {
-//            console.log(jqXHR);
-//        })
     });
 });
 
@@ -80,7 +74,10 @@ var Config = {
 
 var Error = {
     show: function (message) {
-        if (message === '') {
+
+        $('.loader').removeClass('loader-active');
+
+        if (message === '' || typeof message === undefined) {
             return;
         }
         var container = $('#error');

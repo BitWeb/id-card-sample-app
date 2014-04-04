@@ -69,17 +69,17 @@ var Certificate = {
     keyUsage: null,
     validFrom: "", // Sertifikaadi kehtivuse algusaeg, esitatud kujul dd.mm.yyyy hh:mm:ss, Zulu ajavööndis
     validTo: null // Sertifikaadi kehtivuse lõpuaeg, esitatud kujul dd.mm.yyyy hh:mm:ss, Zulu ajavööndis
-}
+};
 
 var getCertificatesResponse = {
     certificates: [],
     returnCode: 0
-}
+};
 
 var SignResponse = {
     signature: null,
     returnCode: 0
-}
+};
 
 //1..99 on pluginatest tulevad vead
 //ver 0.12 - veakoodi 100 detailsem kirjeldus
@@ -94,7 +94,7 @@ var dictionary = {
 	17: {est: 'Vigane räsi',						eng: 'Invalid hash',					lit: 'Neteisinga santrauka',					rus: 'Неверный хеш'},
 	19: {est: 'Veebis allkirjastamise käivitamine on võimalik vaid https aadressilt',		eng: 'Web signing is allowed only from https:// URL',					lit: 'Web signing is allowed only from https:// URL',					rus: 'Подпись в интернете возможна только с URL-ов, начинающихся с https://'},
 	100: {est: 'Teie arvutist puudub allkirjastamistarkvara või ei ole Teie operatsioonisüsteemi ja brauseri korral veebis allkirjastamine toetatud. Allkirjastamistarkvara saate aadressilt https://installer.id.ee',		eng: 'Web signing module is missing from your computer or web signing is not supported on your operating system and browser platform. Signing software is available from https://installer.id.ee',		lit: 'Web signing module is missing from your computer or web signing is not supported on your operating system and browser platform. Signing software is available from https://installer.id.ee',				rus: 'На вашем компьютере отстутствует модуль для цифровой подписи в интернете или цифровая подпись в интернете не поддерживается вашей операционной системой и/или браузером. Программное обеспечение доступно здесь: https://installer.id.ee'}
-}
+};
 
 
 var loadedPlugin = '';
@@ -108,7 +108,7 @@ function IdCardException(returnCode, message) {
 
     this.isError = function () {
         return this.returnCode != 1;
-    }
+    };
 
     this.isCancelled = function () {
         return this.returnCode == 1;
@@ -118,11 +118,7 @@ function IdCardException(returnCode, message) {
 //Ahto, 2013.05, See ei toimi IE puhul, põhiliselt on seda vaja mac+safari juhu jaoks.
 function isPluginSupported(pluginName) {
        if (navigator.mimeTypes && navigator.mimeTypes.length) {
-	       if (navigator.mimeTypes[pluginName]) {
-		       return true;
-	       } else {
-		       return false;
-	       }
+	       return navigator.mimeTypes[pluginName];
        } else {
 	       return false;
        }
@@ -164,7 +160,7 @@ function loadSigningPlugin(lang, pluginToLoad){
 
 	var pluginHTML = {	
 		digidocPlugin:	'<object id="IdCardSigning" type="application/x-digidoc" style="width: 1px; height: 1px; visibility: hidden;"></object>'
-	}
+	};
 	var plugin;
 
 	if (!lang || lang == undefined)
@@ -284,7 +280,7 @@ function digidocPluginHandler(lang)
 		} else {
 			return TempCert;
 		}
-	}
+	};
 
 	this.sign = function (id, hash ) {
 		var response;
@@ -329,7 +325,7 @@ function digidocPluginHandler(lang)
             throw new IdCardException(response.returnCode, dictionary[response.returnCode][lang]);
         }
         return response.signature;
-	}
+	};
 
 	this.getVersion = function () {
 		return plugin.version;
@@ -349,19 +345,19 @@ function IdCardPluginHandler(lang)
 
 	this.choosePluginHandler = function () {
 	    return new digidocPluginHandler(lang);
-	}
+	};
 
 	this.getCertificate = function () {
 
 		pluginHandler = this.choosePluginHandler();
 		return pluginHandler.getCertificate();	
-	}
+	};
 
 	this.sign = function (id, hash) {
 
 		pluginHandler = this.choosePluginHandler();
 		return pluginHandler.sign(id, hash);
-	}
+	};
 
 	this.getVersion = function () {
 

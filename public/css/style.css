@@ -35,3 +35,24 @@ div.container a.brand {
     margin-left: 0;
     padding: 8px 20px 12px 40px;
 }
+
+.loader {
+    position: relative;
+}
+
+.loader-active {
+    opacity: 0.4;
+}
+
+.loader-active.loader:after {
+    content: " ";
+    background: url("../img/loader.gif") no-repeat;
+    width: 32px;
+    height: 32px;
+    margin-left: -16px; /* pool loaderi mõõdust */
+    margin-top: -16px; /* pool loaderi mõõdust */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    opacity: 1.0;
+}
