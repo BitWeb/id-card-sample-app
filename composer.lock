@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BitWeb/error-reporting.git",
-                "reference": "99a03fab6476964088b00a9c4ade8104ae42ad43"
+                "reference": "631fabeebadd23ff81fd71e9b88b1fe0edae0774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BitWeb/error-reporting/zipball/99a03fab6476964088b00a9c4ade8104ae42ad43",
-                "reference": "99a03fab6476964088b00a9c4ade8104ae42ad43",
+                "url": "https://api.github.com/repos/BitWeb/error-reporting/zipball/631fabeebadd23ff81fd71e9b88b1fe0edae0774",
+                "reference": "631fabeebadd23ff81fd71e9b88b1fe0edae0774",
                 "shasum": ""
             },
             "require": {
@@ -51,7 +51,7 @@
             ],
             "description": "BitWeb extension for sending errors to email.",
             "homepage": "http://bitweb.ee/",
-            "time": "2014-04-04 08:00:03"
+            "time": "2014-04-04 09:09:48"
         },
         {
             "name": "bitweb/id-card",
@@ -59,17 +59,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BitWeb/id-card.git",
-                "reference": "9704a2269b9c7c9d0f19de64aee28d80cc804662"
+                "reference": "52c4a24b6f1cd4d361c1e41815546b8c6edee248"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BitWeb/id-card/zipball/9704a2269b9c7c9d0f19de64aee28d80cc804662",
-                "reference": "9704a2269b9c7c9d0f19de64aee28d80cc804662",
+                "url": "https://api.github.com/repos/BitWeb/id-card/zipball/52c4a24b6f1cd4d361c1e41815546b8c6edee248",
+                "reference": "52c4a24b6f1cd4d361c1e41815546b8c6edee248",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3",
-                "zendframework/zend-soap": "2.3.*"
+                "zendframework/zend-soap": ">=2.2.2"
             },
             "require-dev": {
                 "phpunit/phpunit": "3.7.*",
@@ -91,7 +91,7 @@
             ],
             "description": "BitWeb extension for Estonian ID-Card authentication and signing.",
             "homepage": "http://bitweb.ee/",
-            "time": "2014-04-03 16:34:47"
+            "time": "2014-04-06 17:12:42"
         },
         {
             "name": "bitweb/stdlib",

@@ -68,14 +68,12 @@ class IndexController extends AbstractActionController
             if ($certHex !== null && $certId !== null) {
                 if ($file !== null && file_exists($this->fileStoragePath . DIRECTORY_SEPARATOR . $file) && $fileRealName !== null) {
                     try {
-                        $signatureService = new SignatureService();
-                        $signatureService->setWsdl();
-                        $signatureService->initSoap();
+                        $signatureService = $this->initSignatureService();
 
                         $sessionId = $signatureService->startSession($this->fileStoragePath . DIRECTORY_SEPARATOR . $file, $fileRealName);
                         $hash = $signatureService->prepareSignature($sessionId, $certId, $certHex);
                     } catch (IdCardException $e) {
-                        $error = $e->getMessage();
+                        $error = $this->formatException($e);
                     }
                 } else {
                     $error = 'File does not exist!';
@@ -107,13 +105,11 @@ class IndexController extends AbstractActionController
             $signatureId = $this->params()->fromPost('signatureId');
             if ($signature !== null && $sessionId !== null && $signatureId !== null) {
                 try {
-                    $signatureService = new SignatureService();
-                    $signatureService->setWsdl();
-                    $signatureService->initSoap();
+                    $signatureService = $this->initSignatureService();
 
                     $signatureService->finalizeSignature($sessionId, $signatureId, $signature);
                 } catch (IdCardException $e) {
-                    $error = $e->getMessage();
+                    $error = $this->formatException($e);
                 }
             } else {
                 $error = 'Invalid signature ID, signature or session!';
@@ -161,7 +157,7 @@ class IndexController extends AbstractActionController
 
                         return $this->response;
                     } catch (IdCardException $e) {
-                        $error = $e->getMessage();
+                        $error = $this->formatException($e);
                     }
                 } else {
                     $error = 'File does not exist!';
@@ -200,8 +196,13 @@ class IndexController extends AbstractActionController
         return parent::getRequest();
     }
 
+    protected function formatException(\Exception $exception)
+    {
+        return $exception->getCode() . ': ' . $exception->getMessage();
+    }
+
     protected function initSignatureService()
     {
-        return (new SignatureService())->setWsdl()->initSoap();
+        return (new SignatureService())->setWsdl('https://digidocservice.sk.ee/?wsdl')->initSoap();
     }
 }

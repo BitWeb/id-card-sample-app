@@ -32,7 +32,7 @@ use BitWeb\IdCard\Authentication\IdCardAuthentication;
             <div class="panel-body">
                 <?php if (!IdCardAuthentication::isUserLoggedIn()): ?>
                     <p>Log in using the button in header or use the button below.</p>
-                    <p><a class="btn btn-success pull-right" href="/id-card/index.php?redirectUrl=<?php echo $this->url('home')?>">Or click here</a></p>
+                    <p><a class="btn btn-success pull-right" href="/id-test/public/id-card/index.php?redirectUrl=<?php echo $this->url('home')?>">Or click here</a></p>
                 <?php else: ?>
                     <p>All done!</p>
                 <?php endif;?>
