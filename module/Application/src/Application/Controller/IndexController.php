@@ -203,6 +203,6 @@ class IndexController extends AbstractActionController
 
     protected function initSignatureService()
     {
-        return (new SignatureService())->setWsdl('https://digidocservice.sk.ee/?wsdl')->initSoap();
+        return (new SignatureService())->setWsdl()->initSoap();
     }
 }
